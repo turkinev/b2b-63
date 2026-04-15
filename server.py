@@ -45,8 +45,9 @@ def track():
         d.get('referrer', ''),
         d.get('screen', ''),
         d.get('language', ''),
+        d.get('user_id', ''),
     ]
-    headers = ['Дата/Время', 'IP', 'Страна', 'Город', 'Браузер (User-Agent)', 'Источник (Referrer)', 'Экран', 'Язык']
+    headers = ['Дата/Время', 'IP', 'Страна', 'Город', 'Браузер (User-Agent)', 'Источник (Referrer)', 'Экран', 'Язык', 'User ID']
     wb = get_wb(VISITS_FILE, headers)
     wb.active.append(row)
     wb.save(VISITS_FILE)

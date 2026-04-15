@@ -281,6 +281,7 @@ fetch('/track', {
     referrer: document.referrer,
     screen:   screen.width + 'x' + screen.height,
     language: navigator.language,
+    user_id:  new URLSearchParams(window.location.search).get('user_id') || '',
   })
 });
 
