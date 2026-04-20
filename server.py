@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from openpyxl import Workbook, load_workbook
 from datetime import datetime
@@ -52,5 +52,13 @@ def track():
     wb.active.append(row)
     wb.save(VISITS_FILE)
     return jsonify({'ok': True})
+
+@app.route('/download/secret123/заявки')
+def download_orders():
+    return send_file(FILE, as_attachment=True)
+
+@app.route('/download/secret123/посетители')
+def download_visits():
+    return send_file(VISITS_FILE, as_attachment=True)
 
 app.run(port=5000)
