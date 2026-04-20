@@ -265,8 +265,12 @@
       <input type="text" id="contact" name="contact" placeholder="Телефон или e-mail" required />
     </div>
     <div class="form-group">
-      <label for="product">Товар <span class="opt">(необязательно)</span></label>
-      <textarea id="product" name="product" placeholder="Какой товар вас интересует?"></textarea>
+      <label for="inn">ИНН <span class="opt">(необязательно)</span></label>
+      <input type="text" id="inn" name="inn" placeholder="123456789012" />
+    </div>
+    <div class="form-group">
+      <label for="product">Комментарий <span class="opt">(необязательно)</span></label>
+      <textarea id="product" name="product" placeholder="Ваш комментарий"></textarea>
     </div>
     <button type="submit" class="btn" id="submitBtn">Отправить заявку</button>
     <div class="status" id="statusMsg"></div>
@@ -296,6 +300,7 @@ async function submitForm(e) {
   const data = {
     company: document.getElementById('company').value.trim(),
     contact: document.getElementById('contact').value.trim(),
+    inn:     document.getElementById('inn').value.trim(),
     product: document.getElementById('product').value.trim()
   };
 

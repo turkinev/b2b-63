@@ -20,8 +20,8 @@ def get_wb(path, headers):
 @app.route('/submit', methods=['POST'])
 def submit():
     d = request.get_json()
-    wb = get_wb(FILE, ['Дата', 'Компания', 'Контакт', 'Товар'])
-    wb.active.append([datetime.now().strftime('%d.%m.%Y %H:%M'), d['company'], d['contact'], d.get('product', '')])
+    wb = get_wb(FILE, ['Дата', 'Компания', 'Контакт', 'ИНН', 'Комментарий'])
+    wb.active.append([datetime.now().strftime('%d.%m.%Y %H:%M'), d['company'], d['contact'], d.get('inn', ''), d.get('product', '')])
     wb.save(FILE)
     return jsonify({'ok': True})
 
