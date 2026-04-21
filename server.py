@@ -7,11 +7,13 @@ import os, requests as req
 app = Flask(__name__)
 CORS(app)
 
-MM_HOOK = 'https://mm.63pokupki.ru:8443/hooks/k7xh9osx5tr1pbyr1b6y3rqcba'
+MM_HOOK          = 'https://mm.63pokupki.ru:8443/hooks/k7xh9osx5tr1pbyr1b6y3rqcba'
+MM_HOOK_PVZ      = 'https://mm.63pokupki.ru:8443/hooks/ycpetuzfn78u881yx793cfghpy'
+MM_HOOK_SUPPLIER = 'https://mm.63pokupki.ru:8443/hooks/sds81m1gyjnw7guk8xjy9agqcw'
 
-def notify_mm(text):
+def notify_mm_hook(hook, text):
     try:
-        req.post(MM_HOOK, json={'text': text}, timeout=5)
+        req.post(hook, json={'text': text}, timeout=5)
     except:
         pass
 
@@ -31,7 +33,7 @@ def submit():
     wb = get_wb(FILE, ['Дата', 'Компания', 'Контакт', 'ИНН', 'Комментарий'])
     wb.active.append([datetime.now().strftime('%d.%m.%Y %H:%M'), d['company'], d['contact'], d.get('inn', ''), d.get('product', '')])
     wb.save(FILE)
-    notify_mm(f"📥 **Новая B2B заявка**\n**ИНН:** {d.get('inn','—')}\n**Компания:** {d['company']}\n**Контакт:** {d['contact']}\n**Комментарий:** {d.get('product','—')}")
+    notify_mm_hook(MM_HOOK, f"📥 **Новая B2B заявка**\n**ИНН:** {d.get('inn','—')}\n**Компания:** {d['company']}\n**Контакт:** {d['contact']}\n**Комментарий:** {d.get('product','—')}")
     return jsonify({'ok': True})
 
 @app.route('/track', methods=['POST'])
@@ -68,6 +70,7 @@ def submit_pvz():
     wb = get_wb('заявки_пвз.xlsx', ['Дата', 'ИНН', 'Компания', 'Адрес', 'Площадь', 'Контакт', 'Комментарий'])
     wb.active.append([datetime.now().strftime('%d.%m.%Y %H:%M'), d.get('inn',''), d['company'], d.get('address',''), d.get('area',''), d['contact'], d.get('comment','')])
     wb.save('заявки_пвз.xlsx')
+    notify_mm_hook(MM_HOOK_PVZ, f"🏪 **Новая заявка ПВЗ**\n**ИНН:** {d.get('inn','—')}\n**Компания:** {d['company']}\n**Адрес:** {d.get('address','—')}\n**Площадь:** {d.get('area','—')} кв.м\n**Контакт:** {d['contact']}\n**Комментарий:** {d.get('comment','—')}")
     return jsonify({'ok': True})
 
 @app.route('/submit-supplier', methods=['POST'])
@@ -76,6 +79,7 @@ def submit_supplier():
     wb = get_wb('заявки_поставщики.xlsx', ['Дата', 'ИНН', 'Компания', 'Категория', 'Сайт', 'Контакт', 'Комментарий'])
     wb.active.append([datetime.now().strftime('%d.%m.%Y %H:%M'), d.get('inn',''), d['company'], d.get('category',''), d.get('site',''), d['contact'], d.get('comment','')])
     wb.save('заявки_поставщики.xlsx')
+    notify_mm_hook(MM_HOOK_SUPPLIER, f"🚚 **Новая заявка поставщика**\n**ИНН:** {d.get('inn','—')}\n**Компания:** {d['company']}\n**Категория:** {d.get('category','—')}\n**Сайт:** {d.get('site','—')}\n**Контакт:** {d['contact']}\n**Комментарий:** {d.get('comment','—')}")
     return jsonify({'ok': True})
 
 @app.route('/download/secret123/заявки')
