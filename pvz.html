@@ -128,12 +128,12 @@
       <input type="text" id="company" name="company" placeholder="ООО «Название» или ИП Иванов" required />
     </div>
     <div class="form-group">
-      <label for="address">Адрес помещения</label>
+      <label for="address">Адреса помещений</label>
       <input type="text" id="address" name="address" placeholder="г. Самара, ул. Ленина, 10" required />
     </div>
     <div class="form-group">
-      <label for="area">Площадь <span class="opt">(кв.м, необязательно)</span></label>
-      <input type="text" id="area" name="area" placeholder="20" />
+      <label for="count">Количество ПВЗ</label>
+      <input type="text" id="count" name="count" placeholder="1" required />
     </div>
     <div class="form-group">
       <label for="contact">Контакт</label>
@@ -172,7 +172,7 @@ async function submitForm(e) {
     inn:     document.getElementById('inn').value.trim(),
     company: document.getElementById('company').value.trim(),
     address: document.getElementById('address').value.trim(),
-    area:    document.getElementById('area').value.trim(),
+    count:   document.getElementById('count').value.trim(),
     contact: document.getElementById('contact').value.trim(),
     comment: document.getElementById('comment').value.trim(),
   };

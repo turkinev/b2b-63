@@ -67,10 +67,10 @@ def track():
 @app.route('/submit-pvz', methods=['POST'])
 def submit_pvz():
     d = request.get_json()
-    wb = get_wb('заявки_пвз.xlsx', ['Дата', 'ИНН', 'Компания', 'Адрес', 'Площадь', 'Контакт', 'Комментарий'])
-    wb.active.append([datetime.now().strftime('%d.%m.%Y %H:%M'), d.get('inn',''), d['company'], d.get('address',''), d.get('area',''), d['contact'], d.get('comment','')])
+    wb = get_wb('заявки_пвз.xlsx', ['Дата', 'ИНН', 'Компания', 'Адреса', 'Кол-во ПВЗ', 'Контакт', 'Комментарий'])
+    wb.active.append([datetime.now().strftime('%d.%m.%Y %H:%M'), d.get('inn',''), d['company'], d.get('address',''), d.get('count',''), d['contact'], d.get('comment','')])
     wb.save('заявки_пвз.xlsx')
-    notify_mm_hook(MM_HOOK_PVZ, f"🏪 **Новая заявка ПВЗ**\n**ИНН:** {d.get('inn','—')}\n**Компания:** {d['company']}\n**Адрес:** {d.get('address','—')}\n**Площадь:** {d.get('area','—')} кв.м\n**Контакт:** {d['contact']}\n**Комментарий:** {d.get('comment','—')}")
+    notify_mm_hook(MM_HOOK_PVZ, f"🏪 **Новая заявка ПВЗ**\n**ИНН:** {d.get('inn','—')}\n**Компания:** {d['company']}\n**Адреса:** {d.get('address','—')}\n**Кол-во ПВЗ:** {d.get('count','—')}\n**Контакт:** {d['contact']}\n**Комментарий:** {d.get('comment','—')}")
     return jsonify({'ok': True})
 
 @app.route('/submit-supplier', methods=['POST'])
