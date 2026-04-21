@@ -7,6 +7,14 @@ import os, requests as req
 app = Flask(__name__)
 CORS(app)
 
+MM_HOOK = 'https://mm.63pokupki.ru:8443/hooks/k7xh9osx5tr1pbyr1b6y3rqcba'
+
+def notify_mm(text):
+    try:
+        req.post(MM_HOOK, json={'text': text}, timeout=5)
+    except:
+        pass
+
 FILE        = 'заявки.xlsx'
 VISITS_FILE = 'посетители.xlsx'
 
@@ -23,6 +31,7 @@ def submit():
     wb = get_wb(FILE, ['Дата', 'Компания', 'Контакт', 'ИНН', 'Комментарий'])
     wb.active.append([datetime.now().strftime('%d.%m.%Y %H:%M'), d['company'], d['contact'], d.get('inn', ''), d.get('product', '')])
     wb.save(FILE)
+    notify_mm(f"📥 **Новая B2B заявка**\n**ИНН:** {d.get('inn','—')}\n**Компания:** {d['company']}\n**Контакт:** {d['contact']}\n**Комментарий:** {d.get('product','—')}")
     return jsonify({'ok': True})
 
 @app.route('/track', methods=['POST'])
