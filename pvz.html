@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>63pokupki — Стать пунктом выдачи</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0a0f1e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .bg {
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(16, 130, 80, 0.5) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(3, 200, 120, 0.3) 0%, transparent 60%),
+        radial-gradient(ellipse 100% 80% at 50% 100%, rgba(0, 40, 20, 0.9) 0%, transparent 70%),
+        linear-gradient(135deg, #0a1a0f 0%, #0d2e1b 50%, #071410 100%);
+      z-index: 0;
+    }
+    .grid {
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: 0;
+    }
+    .orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.18; z-index: 0; animation: drift 12s ease-in-out infinite alternate; }
+    .orb-1 { width: 500px; height: 500px; background: #10b981; top: -100px; left: -100px; animation-delay: 0s; }
+    .orb-2 { width: 350px; height: 350px; background: #059669; bottom: -80px; right: -80px; animation-delay: -4s; }
+    .orb-3 { width: 250px; height: 250px; background: #34d399; top: 50%; left: 50%; animation-delay: -8s; }
+    @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(30px,20px) scale(1.08); } }
+    .card {
+      position: relative; z-index: 10;
+      width: min(560px, 94vw);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 24px;
+      padding: 52px 48px 48px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06) inset, 0 1px 0 rgba(255,255,255,0.12) inset;
+    }
+    .brand-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 100px; padding: 6px 14px; margin-bottom: 24px;
+    }
+    .brand-chip .dot {
+      width: 8px; height: 8px; background: #34d399; border-radius: 50%;
+      box-shadow: 0 0 8px #34d399; animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(0.8);} }
+    .brand-chip span { font-size: 13px; font-weight: 600; color: #6ee7b7; letter-spacing: 0.5px; }
+    h1 { font-size: clamp(28px,5vw,42px); font-weight: 800; line-height: 1.15; color: #fff; margin-bottom: 10px; letter-spacing: -0.5px; }
+    h1 .accent { background: linear-gradient(90deg, #34d399, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .subtitle { font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 36px; line-height: 1.5; }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.65); margin-bottom: 7px; letter-spacing: 0.3px; }
+    label .opt { font-weight: 400; color: rgba(255,255,255,0.3); font-style: italic; margin-left: 4px; }
+    input, textarea, select {
+      width: 100%; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px; padding: 13px 16px;
+      font-size: 15px; color: #fff; font-family: inherit;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; outline: none;
+    }
+    select option { background: #0d2e1b; color: #fff; }
+    input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.22); }
+    input:focus, textarea:focus, select:focus { border-color: #10b981; background: rgba(16,185,129,0.1); box-shadow: 0 0 0 3px rgba(16,185,129,0.2); }
+    textarea { resize: vertical; min-height: 80px; }
+    .btn {
+      width: 100%; padding: 15px; margin-top: 8px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff; font-size: 16px; font-weight: 700; font-family: inherit;
+      border: none; border-radius: 12px; cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(16,185,129,0.45); letter-spacing: 0.3px;
+    }
+    .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.12),transparent); opacity:0; transition:opacity 0.2s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(16,185,129,0.6); }
+    .btn:hover::before { opacity: 1; }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .status { display:none; margin-top:14px; padding:12px 16px; border-radius:10px; font-size:14px; font-weight:500; text-align:center; }
+    .status.success { display:block; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); color:#6ee7b7; }
+    .status.error { display:block; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.35); color:#fca5a5; }
+    .dots { position:absolute; top:-20px; right:-20px; width:120px; height:120px; background-image:radial-gradient(circle,rgba(255,255,255,0.15) 1px,transparent 1px); background-size:14px 14px; border-radius:50%; pointer-events:none; z-index:-1; }
+  </style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="grid"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="card">
+  <div class="dots"></div>
+
+  <div class="brand-chip">
+    <span class="dot"></span>
+    <span>Партнёрство · ПВЗ</span>
+  </div>
+
+  <h1>Станьте<br>пунктом выдачи<br><span class="accent">63pokupki</span></h1>
+  <p class="subtitle">Дополнительный доход без вложений — оставьте заявку и мы свяжемся с вами.</p>
+
+  <form id="pvzForm" onsubmit="submitForm(event)">
+    <div class="form-group">
+      <label for="inn">ИНН</label>
+      <input type="text" id="inn" name="inn" placeholder="123456789012" required />
+    </div>
+    <div class="form-group">
+      <label for="company">Компания / ИП</label>
+      <input type="text" id="company" name="company" placeholder="ООО «Название» или ИП Иванов" required />
+    </div>
+    <div class="form-group">
+      <label for="address">Адрес помещения</label>
+      <input type="text" id="address" name="address" placeholder="г. Самара, ул. Ленина, 10" required />
+    </div>
+    <div class="form-group">
+      <label for="area">Площадь <span class="opt">(кв.м, необязательно)</span></label>
+      <input type="text" id="area" name="area" placeholder="20" />
+    </div>
+    <div class="form-group">
+      <label for="contact">Контакт</label>
+      <input type="text" id="contact" name="contact" placeholder="Телефон или e-mail" required />
+    </div>
+    <div class="form-group">
+      <label for="comment">Комментарий <span class="opt">(необязательно)</span></label>
+      <textarea id="comment" name="comment" placeholder="Дополнительная информация"></textarea>
+    </div>
+    <button type="submit" class="btn" id="submitBtn">Отправить заявку</button>
+    <div class="status" id="statusMsg"></div>
+  </form>
+</div>
+
+<script>
+fetch('/track', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    referrer: document.referrer,
+    screen:   screen.width + 'x' + screen.height,
+    language: navigator.language,
+    user_id:  new URLSearchParams(window.location.search).get('user_id') || '',
+  })
+});
+
+async function submitForm(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const status = document.getElementById('statusMsg');
+  btn.disabled = true;
+  btn.textContent = 'Отправляем...';
+  status.className = 'status';
+
+  const data = {
+    inn:     document.getElementById('inn').value.trim(),
+    company: document.getElementById('company').value.trim(),
+    address: document.getElementById('address').value.trim(),
+    area:    document.getElementById('area').value.trim(),
+    contact: document.getElementById('contact').value.trim(),
+    comment: document.getElementById('comment').value.trim(),
+  };
+
+  try {
+    const res = await fetch('/submit-pvz', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (res.ok) {
+      status.className = 'status success';
+      status.textContent = '✓ Заявка принята! Мы свяжемся с вами в ближайшее время.';
+      document.getElementById('pvzForm').reset();
+    } else {
+      throw new Error(json.error || 'Ошибка сервера');
+    }
+  } catch (err) {
+    status.className = 'status error';
+    status.textContent = '✗ Ошибка: ' + err.message;
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Отправить заявку';
+}
+</script>
+
+</body>
+</html>

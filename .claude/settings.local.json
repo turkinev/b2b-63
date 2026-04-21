@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh repo:*)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(curl -v --max-time 10 https://b2b.63pokupki.ru)",
+      "Bash(nslookup b2b.63pokupki.ru 8.8.8.8)"
+    ]
+  }
+}

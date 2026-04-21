@@ -53,6 +53,22 @@ def track():
     wb.save(VISITS_FILE)
     return jsonify({'ok': True})
 
+@app.route('/submit-pvz', methods=['POST'])
+def submit_pvz():
+    d = request.get_json()
+    wb = get_wb('заявки_пвз.xlsx', ['Дата', 'ИНН', 'Компания', 'Адрес', 'Площадь', 'Контакт', 'Комментарий'])
+    wb.active.append([datetime.now().strftime('%d.%m.%Y %H:%M'), d.get('inn',''), d['company'], d.get('address',''), d.get('area',''), d['contact'], d.get('comment','')])
+    wb.save('заявки_пвз.xlsx')
+    return jsonify({'ok': True})
+
+@app.route('/submit-supplier', methods=['POST'])
+def submit_supplier():
+    d = request.get_json()
+    wb = get_wb('заявки_поставщики.xlsx', ['Дата', 'ИНН', 'Компания', 'Категория', 'Сайт', 'Контакт', 'Комментарий'])
+    wb.active.append([datetime.now().strftime('%d.%m.%Y %H:%M'), d.get('inn',''), d['company'], d.get('category',''), d.get('site',''), d['contact'], d.get('comment','')])
+    wb.save('заявки_поставщики.xlsx')
+    return jsonify({'ok': True})
+
 @app.route('/download/secret123/заявки')
 def download_orders():
     return send_file(FILE, as_attachment=True)
@@ -60,5 +76,13 @@ def download_orders():
 @app.route('/download/secret123/посетители')
 def download_visits():
     return send_file(VISITS_FILE, as_attachment=True)
+
+@app.route('/download/secret123/пвз')
+def download_pvz():
+    return send_file('заявки_пвз.xlsx', as_attachment=True)
+
+@app.route('/download/secret123/поставщики')
+def download_suppliers():
+    return send_file('заявки_поставщики.xlsx', as_attachment=True)
 
 app.run(port=5000)
