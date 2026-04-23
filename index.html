@@ -134,6 +134,9 @@
     }
 
     /* Form */
+    .form-row { display: flex; gap: 12px; }
+    .form-row .form-group { flex: 1; min-width: 0; }
+    @media (max-width: 420px) { .form-row { flex-direction: column; gap: 0; } }
     .form-group {
       margin-bottom: 18px;
     }
@@ -269,9 +272,15 @@
       <label for="company">Компания</label>
       <input type="text" id="company" name="company" placeholder="ООО «Ваша компания»" required />
     </div>
-    <div class="form-group">
-      <label for="contact">Контакт</label>
-      <input type="text" id="contact" name="contact" placeholder="Телефон или e-mail" required />
+    <div class="form-row">
+      <div class="form-group">
+        <label for="phone">Телефон</label>
+        <input type="tel" id="phone" name="phone" placeholder="+7 (999) 000-00-00" required />
+      </div>
+      <div class="form-group">
+        <label for="email">E-mail <span class="opt">(необязательно)</span></label>
+        <input type="email" id="email" name="email" placeholder="info@company.ru" />
+      </div>
     </div>
     <div class="form-group">
       <label for="product">Комментарий <span class="opt">(необязательно)</span></label>
@@ -304,7 +313,8 @@ async function submitForm(e) {
 
   const data = {
     company: document.getElementById('company').value.trim(),
-    contact: document.getElementById('contact').value.trim(),
+    phone:   document.getElementById('phone').value.trim(),
+    email:   document.getElementById('email').value.trim(),
     inn:     document.getElementById('inn').value.trim(),
     product: document.getElementById('product').value.trim()
   };

@@ -101,6 +101,22 @@
     .status.success { display:block; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); color:#6ee7b7; }
     .status.error { display:block; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.35); color:#fca5a5; }
     .dots { position:absolute; top:-20px; right:-20px; width:120px; height:120px; background-image:radial-gradient(circle,rgba(255,255,255,0.15) 1px,transparent 1px); background-size:14px 14px; border-radius:50%; pointer-events:none; z-index:-1; }
+    .address-row { display:flex; gap:8px; margin-bottom:8px; }
+    .address-row input { margin-bottom:0; }
+    .btn-remove-addr {
+      flex-shrink:0; width:42px;
+      background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.25);
+      border-radius:10px; color:#fca5a5; font-size:20px; cursor:pointer;
+      transition:background 0.2s; line-height:1;
+    }
+    .btn-remove-addr:hover { background:rgba(239,68,68,0.22); }
+    .btn-add-addr {
+      width:100%; padding:10px; margin-top:2px;
+      background:rgba(16,185,129,0.08); border:1px dashed rgba(16,185,129,0.35);
+      border-radius:10px; color:#6ee7b7; font-size:13px; font-weight:600; font-family:inherit;
+      cursor:pointer; transition:background 0.2s;
+    }
+    .btn-add-addr:hover { background:rgba(16,185,129,0.18); }
   </style>
 </head>
 <body>
@@ -132,12 +148,18 @@
       <input type="text" id="company" name="company" placeholder="ООО «Название» или ИП Иванов" required />
     </div>
     <div class="form-group">
-      <label for="address">Адреса помещений</label>
-      <input type="text" id="address" name="address" placeholder="г. Самара, ул. Ленина, 10" required />
-    </div>
-    <div class="form-group">
       <label for="count">Количество ПВЗ</label>
       <input type="text" id="count" name="count" placeholder="1" required />
+    </div>
+    <div class="form-group">
+      <label>Адреса ПВЗ</label>
+      <div id="addressList">
+        <div class="address-row">
+          <input type="text" name="address[]" placeholder="г. Самара, ул. Ленина, 10" required />
+          <button type="button" class="btn-remove-addr" onclick="removeAddress(this)" style="display:none">×</button>
+        </div>
+      </div>
+      <button type="button" class="btn-add-addr" onclick="addAddress()">+ Добавить адрес</button>
     </div>
     <div class="form-group">
       <label for="contact">Контакт</label>
@@ -175,7 +197,7 @@ async function submitForm(e) {
   const data = {
     inn:     document.getElementById('inn').value.trim(),
     company: document.getElementById('company').value.trim(),
-    address: document.getElementById('address').value.trim(),
+    address: Array.from(document.querySelectorAll('#addressList [name="address[]"]')).map(i => i.value.trim()).filter(Boolean).join('\n'),
     count:   document.getElementById('count').value.trim(),
     contact: document.getElementById('contact').value.trim(),
     comment: document.getElementById('comment').value.trim(),
@@ -191,6 +213,10 @@ async function submitForm(e) {
     if (res.ok) {
       status.className = 'status success';
       status.textContent = '✓ Заявка принята! Мы свяжемся с вами в ближайшее время.';
+      const list = document.getElementById('addressList');
+      list.querySelectorAll('.address-row:not(:first-child)').forEach(r => r.remove());
+      list.querySelector('input').value = '';
+      updateRemoveButtons();
       document.getElementById('pvzForm').reset();
     } else {
       throw new Error(json.error || 'Ошибка сервера');
@@ -202,6 +228,28 @@ async function submitForm(e) {
 
   btn.disabled = false;
   btn.textContent = 'Отправить заявку';
+}
+
+function addAddress() {
+  const list = document.getElementById('addressList');
+  const row = document.createElement('div');
+  row.className = 'address-row';
+  row.innerHTML = '<input type="text" name="address[]" placeholder="г. Самара, ул. Ленина, 10" required /><button type="button" class="btn-remove-addr" onclick="removeAddress(this)">×</button>';
+  list.appendChild(row);
+  updateRemoveButtons();
+  row.querySelector('input').focus();
+}
+
+function removeAddress(btn) {
+  btn.closest('.address-row').remove();
+  updateRemoveButtons();
+}
+
+function updateRemoveButtons() {
+  const rows = document.querySelectorAll('#addressList .address-row');
+  document.querySelectorAll('#addressList .btn-remove-addr').forEach(b => {
+    b.style.display = rows.length > 1 ? '' : 'none';
+  });
 }
 </script>
 

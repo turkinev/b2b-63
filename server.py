@@ -30,10 +30,10 @@ def get_wb(path, headers):
 @app.route('/submit', methods=['POST'])
 def submit():
     d = request.get_json()
-    wb = get_wb(FILE, ['Дата', 'Компания', 'Контакт', 'ИНН', 'Комментарий'])
-    wb.active.append([datetime.now().strftime('%d.%m.%Y %H:%M'), d['company'], d['contact'], d.get('inn', ''), d.get('product', '')])
+    wb = get_wb(FILE, ['Дата', 'Компания', 'Телефон', 'Email', 'ИНН', 'Комментарий'])
+    wb.active.append([datetime.now().strftime('%d.%m.%Y %H:%M'), d['company'], d.get('phone', ''), d.get('email', ''), d.get('inn', ''), d.get('product', '')])
     wb.save(FILE)
-    notify_mm_hook(MM_HOOK, f"📥 **Новая B2B заявка**\n**ИНН:** {d.get('inn','—')}\n**Компания:** {d['company']}\n**Контакт:** {d['contact']}\n**Комментарий:** {d.get('product','—')}")
+    notify_mm_hook(MM_HOOK, f"📥 **Новая B2B заявка**\n**ИНН:** {d.get('inn','—')}\n**Компания:** {d['company']}\n**Телефон:** {d.get('phone','—')}\n**Email:** {d.get('email','—')}\n**Комментарий:** {d.get('product','—')}")
     return jsonify({'ok': True})
 
 @app.route('/track', methods=['POST'])
