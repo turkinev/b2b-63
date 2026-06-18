@@ -122,29 +122,31 @@
   <p class="subtitle">Выход на новый канал сбыта — оставьте заявку и мы свяжемся с вами.</p>
 
   <form id="supplierForm" onsubmit="submitForm(event)">
+    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"
+           style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
     <div class="form-group">
       <label for="inn">ИНН</label>
-      <input type="text" id="inn" name="inn" placeholder="123456789012" required />
+      <input type="text" id="inn" name="inn" inputmode="numeric" maxlength="12" pattern="\d{10}|\d{12}" placeholder="123456789012" required />
     </div>
     <div class="form-group">
       <label for="company">Компания / ИП</label>
-      <input type="text" id="company" name="company" placeholder="ООО «Название» или ИП Иванов" required />
+      <input type="text" id="company" name="company" maxlength="200" placeholder="ООО «Название» или ИП Иванов" required />
     </div>
     <div class="form-group">
       <label for="category">Категория товаров</label>
-      <input type="text" id="category" name="category" placeholder="Электроника, одежда, продукты..." required />
+      <input type="text" id="category" name="category" maxlength="100" placeholder="Электроника, одежда, продукты..." required />
     </div>
     <div class="form-group">
       <label for="site">Сайт <span class="opt">(необязательно)</span></label>
-      <input type="text" id="site" name="site" placeholder="https://example.ru" />
+      <input type="text" id="site" name="site" maxlength="200" placeholder="https://example.ru" />
     </div>
     <div class="form-group">
       <label for="contact">Контакт</label>
-      <input type="text" id="contact" name="contact" placeholder="Телефон или e-mail" required />
+      <input type="text" id="contact" name="contact" maxlength="100" placeholder="Телефон или e-mail" required />
     </div>
     <div class="form-group">
       <label for="comment">Комментарий <span class="opt">(необязательно)</span></label>
-      <textarea id="comment" name="comment" placeholder="Дополнительная информация о товарах"></textarea>
+      <textarea id="comment" name="comment" maxlength="2000" placeholder="Дополнительная информация о товарах"></textarea>
     </div>
     <button type="submit" class="btn" id="submitBtn">Отправить заявку</button>
     <div class="status" id="statusMsg"></div>
@@ -178,6 +180,7 @@ async function submitForm(e) {
     site:     document.getElementById('site').value.trim(),
     contact:  document.getElementById('contact').value.trim(),
     comment:  document.getElementById('comment').value.trim(),
+    website:  document.getElementById('website').value
   };
 
   try {

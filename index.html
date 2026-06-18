@@ -264,27 +264,29 @@
   <p class="subtitle">Оптовые цены — оставьте заявку и мы свяжемся с вами.</p>
 
   <form id="b2bForm" onsubmit="submitForm(event)">
+    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"
+           style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
     <div class="form-group">
       <label for="inn">ИНН</label>
-      <input type="text" id="inn" name="inn" placeholder="123456789012" required />
+      <input type="text" id="inn" name="inn" inputmode="numeric" maxlength="12" pattern="\d{10}|\d{12}" placeholder="123456789012" required />
     </div>
     <div class="form-group">
       <label for="company">Компания</label>
-      <input type="text" id="company" name="company" placeholder="ООО «Ваша компания»" required />
+      <input type="text" id="company" name="company" maxlength="200" placeholder="ООО «Ваша компания»" required />
     </div>
     <div class="form-row">
       <div class="form-group">
         <label for="phone">Телефон</label>
-        <input type="tel" id="phone" name="phone" placeholder="+7 (999) 000-00-00" required />
+        <input type="tel" id="phone" name="phone" maxlength="32" placeholder="+7 (999) 000-00-00" required />
       </div>
       <div class="form-group">
         <label for="email">E-mail <span class="opt">(необязательно)</span></label>
-        <input type="email" id="email" name="email" placeholder="info@company.ru" />
+        <input type="email" id="email" name="email" maxlength="254" placeholder="info@company.ru" />
       </div>
     </div>
     <div class="form-group">
       <label for="product">Комментарий <span class="opt">(необязательно)</span></label>
-      <textarea id="product" name="product" placeholder="Ваш комментарий"></textarea>
+      <textarea id="product" name="product" maxlength="2000" placeholder="Ваш комментарий"></textarea>
     </div>
     <button type="submit" class="btn" id="submitBtn">Отправить заявку</button>
     <div class="status" id="statusMsg"></div>
@@ -316,7 +318,8 @@ async function submitForm(e) {
     phone:   document.getElementById('phone').value.trim(),
     email:   document.getElementById('email').value.trim(),
     inn:     document.getElementById('inn').value.trim(),
-    product: document.getElementById('product').value.trim()
+    product: document.getElementById('product').value.trim(),
+    website: document.getElementById('website').value
   };
 
   try {
