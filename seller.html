@@ -54,8 +54,8 @@
     /* ---------- Header ---------- */
     header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
     .head { display: flex; align-items: center; gap: 24px; height: 66px; }
-    .logo { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 19px; letter-spacing: -0.02em; }
-    .logo .badge { background: var(--blue); color: #fff; border-radius: 8px; padding: 2px 9px; }
+    .logo { display: inline-flex; align-items: center; }
+    .logo-img { height: 30px; width: auto; display: block; }
     .head nav { display: flex; align-items: center; gap: 26px; margin-left: auto; }
     .head nav a:not(.btn) { font-size: 14px; font-weight: 600; color: var(--muted); }
     .head nav a:not(.btn):hover { color: var(--ink); }
@@ -153,7 +153,7 @@
 <!-- ============ HEADER ============ -->
 <header>
   <div class="wrap head">
-    <a href="/" class="logo"><span class="badge">63</span> покупки</a>
+    <a href="/" class="logo"><img src="/logotype.svg" alt="63 Покупки" class="logo-img"></a>
     <nav>
       <a href="#why">Почему мы</a>
       <a href="#how">Как начать</a>
@@ -284,7 +284,7 @@
   <div class="wrap">
     <div class="footer-top">
       <div class="footer-col">
-        <a href="/" class="logo" style="margin-bottom:12px"><span class="badge">63</span> покупки</a>
+        <a href="/" class="logo" style="margin-bottom:12px"><img src="/logotype.svg" alt="63 Покупки" class="logo-img"></a>
         <p style="max-width:22em">Маркетплейс оптовых покупок для бизнеса Самарской области.</p>
       </div>
       <div class="footer-col">
