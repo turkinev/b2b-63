@@ -205,16 +205,14 @@
 
     /* ---------- Case ---------- */
     .case { background: var(--white); padding: 88px 0; }
-    .case-card { background: var(--paper); border: 1px solid var(--line); border-radius: 22px; padding: clamp(28px, 4vw, 48px); }
-    .case-card .label { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); margin-bottom: 16px; }
-    .case-card h3 { font-size: clamp(22px, 3vw, 32px); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 32px; }
-    .case-metrics { display: grid; grid-template-columns: 1fr auto 1fr 1fr; gap: 24px 28px; align-items: center; }
-    .cm span { display: block; font-size: 12px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
-    .cm b { display: block; font-size: clamp(38px, 6vw, 60px); font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
-    .cm b.hl { color: var(--blue); }
-    .cm em { display: block; font-style: normal; font-size: 14px; color: var(--muted); margin-top: 8px; }
-    .case-metrics .arrow { font-size: 38px; color: var(--blue); font-weight: 800; text-align: center; }
-    @media (max-width: 760px) { .case-metrics { grid-template-columns: 1fr; gap: 24px; } .case-metrics .arrow { display: none; } }
+    .case .title { font-weight: 800; letter-spacing: -0.04em; line-height: 0.98; text-transform: uppercase; font-size: clamp(28px, 4.5vw, 52px); margin-bottom: 14px; }
+    .case .sub { color: var(--muted); font-size: 17px; margin-bottom: 40px; max-width: 36em; }
+    .case-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .case-item { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: clamp(28px, 3.5vw, 40px); }
+    .case-item .cat { font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--blue); margin-bottom: 18px; }
+    .case-item b { display: block; font-size: clamp(40px, 6vw, 64px); font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+    .case-item em { display: block; font-style: normal; font-size: 15px; color: var(--muted); margin-top: 12px; }
+    @media (max-width: 680px) { .case-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -399,26 +397,18 @@
 <!-- ============ CASE ============ -->
 <section class="case">
   <div class="wrap">
-    <div class="case-card">
-      <div class="label">Пример поставщика</div>
-      <!-- TODO: заменить на реальный кейс с настоящими цифрами -->
-      <h3>Категория «Косметика» — рост заказов после запуска</h3>
-      <div class="case-metrics">
-        <div class="cm">
-          <span>До сотрудничества</span>
-          <b>40</b>
-          <em>заказов в месяц</em>
-        </div>
-        <div class="arrow">→</div>
-        <div class="cm">
-          <span>После запуска</span>
-          <b class="hl">260</b>
-          <em>заказов в месяц</em>
-        </div>
-        <div class="cm">
-          <span>Период</span>
-          <b>4 мес.</b>
-        </div>
+    <h2 class="title">Сколько продают поставщики</h2>
+    <p class="sub">Реальные обороты партнёров на платформе — по категориям.</p>
+    <div class="case-grid">
+      <div class="case-item">
+        <div class="cat">Одежда для женщин</div>
+        <b>1,5 млн ₽</b>
+        <em>оборот в месяц на 63 Покупки</em>
+      </div>
+      <div class="case-item">
+        <div class="cat">Косметика</div>
+        <b>1 млн ₽</b>
+        <em>оборот в месяц на 63 Покупки</em>
       </div>
     </div>
   </div>
