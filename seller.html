@@ -146,6 +146,31 @@
     .footer-col a { display: block; color: var(--muted); margin-bottom: 8px; }
     .footer-col a:hover { color: var(--ink); }
     .footer-bottom { padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    /* ---------- Manifesto ---------- */
+    .manifesto { background: var(--ink); color: #fff; padding: 96px 0; }
+    .manifesto h2 { font-weight: 800; letter-spacing: -0.04em; line-height: 0.92; text-transform: uppercase; font-size: clamp(40px, 8vw, 104px); margin-bottom: 30px; }
+    .manifesto h2 .accent { color: #6fb0ff; }
+    .manifesto .p { font-size: clamp(17px, 2.1vw, 22px); color: rgba(255,255,255,0.72); max-width: 32em; margin-bottom: 28px; line-height: 1.5; }
+    .manifesto .pick { font-size: clamp(20px, 2.6vw, 30px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; max-width: 26em; border-top: 1.5px solid rgba(255,255,255,0.2); padding-top: 28px; }
+    .manifesto .pick b { color: #6fb0ff; }
+
+    /* ---------- Compare ---------- */
+    .compare { background: var(--paper); padding: 96px 0; }
+    .compare .title { font-weight: 800; letter-spacing: -0.04em; line-height: 0.96; text-transform: uppercase; font-size: clamp(30px, 5vw, 64px); margin-bottom: 44px; max-width: 16ch; }
+    .cmp { display: grid; grid-template-columns: 1fr 1fr; border-top: 1.5px solid var(--ink); }
+    .cmp .col-head { padding: 18px 0; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .cmp .col-head.them { color: var(--muted); }
+    .cmp .col-head.us { color: var(--blue); padding-left: 28px; border-left: 1px solid var(--line); }
+    .cmp .cell { padding: 22px 0; border-top: 1px solid var(--line); font-size: clamp(15px, 1.9vw, 20px); font-weight: 600; display: flex; align-items: flex-start; gap: 10px; }
+    .cmp .cell.them2 { color: var(--muted); }
+    .cmp .cell.them2::before { content: '✕'; color: #c4c0b6; font-weight: 800; }
+    .cmp .cell.us2 { color: var(--ink); font-weight: 700; padding-left: 28px; border-left: 1px solid var(--line); }
+    .cmp .cell.us2::before { content: '✓'; color: var(--blue); font-weight: 800; }
+    @media (max-width: 620px) {
+      .cmp { grid-template-columns: 1fr; }
+      .cmp .col-head { display: none; }
+      .cmp .cell.us2 { padding-left: 0; border-left: none; border-top: none; padding-top: 0; padding-bottom: 22px; }
+    }
   </style>
 </head>
 <body>
@@ -184,7 +209,7 @@
       Продавайте по своей<br>
       <span class="accent">оптовой цене</span>
     </h1>
-    <p class="hero-claims">Без складов. Без скрытых платежей. Без лишних расходов.</p>
+    <p class="hero-claims">Больше продаж за счёт лучшей цены. Без комиссий, штрафов и обязательного хранения.</p>
     <div class="hero-foot">
       <p class="lead">Подключайтесь к «63pokupki» и получайте дополнительные продажи через платформу с прозрачными условиями сотрудничества.</p>
       <div class="hero-cta">
@@ -197,6 +222,15 @@
       <div><b>Без хранения остатков</b><span>Поставки только под реальные заказы</span></div>
       <div><b>Прозрачные условия</b><span>Без скрытых комиссий и дополнительных сборов</span></div>
     </div>
+  </div>
+</section>
+
+<!-- ============ MANIFESTO ============ -->
+<section class="manifesto">
+  <div class="wrap">
+    <h2>Мы продаём <span class="accent">ценой</span></h2>
+    <p class="p">Покупатели идут на 63pokupki за тем, чего нет нигде, — за самой низкой ценой. Это создаёт стабильный поток заказов, и ваш товар продаётся быстрее.</p>
+    <p class="pick">Поэтому мы работаем не со всеми — берём только поставщиков, чья цена <b>ощутимо ниже рыночной</b>. Есть такое предложение — нам по пути.</p>
   </div>
 </section>
 
@@ -223,6 +257,25 @@
       <span class="n">04</span>
       <h3>Лояльная аудитория</h3>
       <p>Площадкой пользуются покупатели, которые регулярно возвращаются за новыми заказами и рекомендуют сервис другим.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARE ============ -->
+<section class="compare">
+  <div class="wrap">
+    <h2 class="title">Не как на маркетплейсах</h2>
+    <div class="cmp">
+      <div class="col-head them">На маркетплейсах</div>
+      <div class="col-head us">На 63pokupki</div>
+      <div class="cell them2">Комиссия с каждой продажи</div>
+      <div class="cell us2">Без комиссий</div>
+      <div class="cell them2">Штрафы и санкции</div>
+      <div class="cell us2">Без штрафов</div>
+      <div class="cell them2">Платное хранение на складе</div>
+      <div class="cell us2">Отгрузка только под заказ</div>
+      <div class="cell them2">Заморозка остатков на складах</div>
+      <div class="cell us2">Заказы партиями, без хранения</div>
     </div>
   </div>
 </section>
