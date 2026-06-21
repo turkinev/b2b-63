@@ -148,7 +148,7 @@
     .footer-bottom { padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
     /* ---------- Manifesto ---------- */
     .manifesto { background: var(--ink); color: #fff; padding: 96px 0; }
-    .manifesto h2 { font-weight: 800; letter-spacing: -0.04em; line-height: 0.92; text-transform: uppercase; font-size: clamp(40px, 8vw, 104px); margin-bottom: 30px; }
+    .manifesto h2 { font-weight: 800; letter-spacing: -0.03em; line-height: 1.02; font-size: clamp(30px, 5vw, 60px); margin-bottom: 28px; max-width: 18ch; }
     .manifesto h2 .accent { color: #6fb0ff; }
     .manifesto .p { font-size: clamp(17px, 2.1vw, 22px); color: rgba(255,255,255,0.72); max-width: 32em; margin-bottom: 28px; line-height: 1.5; }
     .manifesto .pick { font-size: clamp(20px, 2.6vw, 30px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; max-width: 26em; border-top: 1.5px solid rgba(255,255,255,0.2); padding-top: 28px; }
@@ -171,6 +171,34 @@
       .cmp .col-head { display: none; }
       .cmp .cell.us2 { padding-left: 0; border-left: none; border-top: none; padding-top: 0; padding-bottom: 22px; }
     }
+    /* ---------- Trust (О нас) ---------- */
+    .trust-sec { background: var(--paper); padding: 80px 0; }
+    .trust-sec .label { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 36px; }
+    .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1.5px solid var(--ink); }
+    .trust-grid div { padding: 28px 0 4px; border-right: 1px solid var(--line); }
+    .trust-grid div:last-child { border-right: none; }
+    .trust-grid b { display: block; font-size: clamp(34px, 5vw, 58px); font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px; }
+    .trust-grid span { font-size: 14px; color: var(--muted); font-weight: 600; }
+    @media (max-width: 680px) { .trust-grid { grid-template-columns: 1fr 1fr; } .trust-grid div:nth-child(2) { border-right: none; } .trust-grid div:nth-child(1), .trust-grid div:nth-child(2) { border-bottom: 1px solid var(--line); padding-bottom: 20px; } }
+
+    /* ---------- Economics ---------- */
+    .eco { background: var(--white); padding: 88px 0; }
+    .eco .title { font-weight: 800; letter-spacing: -0.04em; line-height: 0.98; text-transform: uppercase; font-size: clamp(28px, 4.5vw, 52px); margin-bottom: 14px; }
+    .eco .sub { color: var(--muted); font-size: 17px; margin-bottom: 40px; max-width: 36em; }
+    .eco-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .eco-step { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 28px; }
+    .eco-step .num { font-size: 14px; font-weight: 800; color: var(--blue); margin-bottom: 14px; }
+    .eco-step p { color: var(--muted); font-size: 15px; margin-bottom: 14px; }
+    .eco-step .price { font-size: clamp(26px, 4vw, 38px); font-weight: 800; letter-spacing: -0.02em; color: var(--ink); }
+    @media (max-width: 760px) { .eco-flow { grid-template-columns: 1fr; } }
+
+    /* ---------- Success ---------- */
+    .success { background: var(--white); padding: 88px 0; }
+    .success .title { font-weight: 800; letter-spacing: -0.04em; line-height: 0.98; text-transform: uppercase; font-size: clamp(28px, 4.5vw, 52px); margin-bottom: 40px; }
+    .success-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0 48px; }
+    .success-list div { display: flex; gap: 12px; align-items: flex-start; font-size: clamp(16px, 2vw, 21px); font-weight: 600; padding: 20px 0; border-top: 1px solid var(--line); }
+    .success-list div::before { content: '✓'; color: var(--blue); font-weight: 800; flex: 0 0 auto; }
+    @media (max-width: 680px) { .success-list { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -209,7 +237,7 @@
       Продавайте по своей<br>
       <span class="accent">оптовой цене</span>
     </h1>
-    <p class="hero-claims">Больше продаж за счёт лучшей цены. Без комиссий, штрафов и обязательного хранения.</p>
+    <p class="hero-claims">Больше продаж за счёт лучшей цены — без штрафов и обязательного хранения.</p>
     <div class="hero-foot">
       <p class="lead">Подключайтесь к «63pokupki» и получайте дополнительные продажи через платформу с прозрачными условиями сотрудничества.</p>
       <div class="hero-cta">
@@ -220,7 +248,7 @@
     <div class="stats">
       <div><b>Своя оптовая цена</b><span>Вы сами определяете стоимость поставки</span></div>
       <div><b>Без хранения остатков</b><span>Поставки только под реальные заказы</span></div>
-      <div><b>Прозрачные условия</b><span>Без скрытых комиссий и дополнительных сборов</span></div>
+      <div><b>Прозрачные условия</b><span>Вы заранее знаете свою цену и условия</span></div>
     </div>
   </div>
 </section>
@@ -228,9 +256,24 @@
 <!-- ============ MANIFESTO ============ -->
 <section class="manifesto">
   <div class="wrap">
-    <h2>Мы продаём <span class="accent">ценой</span></h2>
-    <p class="p">Покупатели идут на 63pokupki за тем, чего нет нигде, — за самой низкой ценой. Это создаёт стабильный поток заказов, и ваш товар продаётся быстрее.</p>
-    <p class="pick">Поэтому мы работаем не со всеми — берём только поставщиков, чья цена <b>ощутимо ниже рыночной</b>. Есть такое предложение — нам по пути.</p>
+    <h2>Мы приводим покупателей туда, где <span class="accent">действительно выгодно</span></h2>
+    <p class="p">Покупатели приходят на 63 Покупки за лучшими предложениями и возвращаются снова, когда находят честную цену. Это создаёт стабильный поток заказов — и ваш товар продаётся быстрее.</p>
+    <p class="p">Поэтому мы сотрудничаем только с поставщиками, которые готовы предложить цену существенно ниже той, что покупатель может найти самостоятельно.</p>
+    <p class="pick">Если вы можете дать рынку реальную выгоду — <b>мы поможем превратить её в продажи.</b></p>
+  </div>
+</section>
+
+<!-- ============ TRUST (О нас) ============ -->
+<section class="trust-sec">
+  <div class="wrap">
+    <div class="label">Нам доверяют</div>
+    <!-- TODO: подставьте реальные цифры -->
+    <div class="trust-grid">
+      <div><b>40 000+</b><span>покупателей на площадке</span></div>
+      <div><b>5 лет</b><span>на рынке Самарской области</span></div>
+      <div><b>1 200+</b><span>выполненных заказов</span></div>
+      <div><b>300+</b><span>поставщиков с нами</span></div>
+    </div>
   </div>
 </section>
 
@@ -269,13 +312,38 @@
       <div class="col-head them">На маркетплейсах</div>
       <div class="col-head us">На 63pokupki</div>
       <div class="cell them2">Комиссия с каждой продажи</div>
-      <div class="cell us2">Без комиссий</div>
+      <div class="cell us2">Без удержаний из вашей цены</div>
       <div class="cell them2">Штрафы и санкции</div>
       <div class="cell us2">Без штрафов</div>
       <div class="cell them2">Платное хранение на складе</div>
       <div class="cell us2">Отгрузка только под заказ</div>
       <div class="cell them2">Заморозка остатков на складах</div>
       <div class="cell us2">Заказы партиями, без хранения</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ECONOMICS ============ -->
+<section class="eco">
+  <div class="wrap">
+    <h2 class="title">Простая экономика</h2>
+    <p class="sub">Вы заранее знаете, сколько получите. Никаких удержаний из вашей цены — наша наценка добавляется поверх, для покупателя.</p>
+    <div class="eco-flow">
+      <div class="eco-step">
+        <div class="num">01</div>
+        <p>Вы передаёте товар по своей оптовой цене</p>
+        <div class="price">1 000 ₽</div>
+      </div>
+      <div class="eco-step">
+        <div class="num">02</div>
+        <p>Мы продаём его покупателю, добавляя свою наценку сверху</p>
+        <div class="price">1 000 ₽ + наценка</div>
+      </div>
+      <div class="eco-step">
+        <div class="num">03</div>
+        <p>Вы получаете свою цену полностью, без удержаний</p>
+        <div class="price">1 000 ₽</div>
+      </div>
     </div>
   </div>
 </section>
@@ -293,16 +361,31 @@
   </div>
 </section>
 
+<!-- ============ SUCCESS ============ -->
+<section class="success">
+  <div class="wrap">
+    <h2 class="title">Что получает поставщик</h2>
+    <div class="success-list">
+      <div>Дополнительный канал продаж и новых клиентов</div>
+      <div>Заказы без затрат на рекламу и продвижение</div>
+      <div>Работу по собственной оптовой цене</div>
+      <div>Отгрузки только под реальные заказы, без хранения</div>
+      <div>Заказы партиями — без заморозки остатков</div>
+      <div>Поддержку менеджера на этапе запуска</div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ APPLY / FORM ============ -->
 <section class="apply" id="apply">
   <div class="wrap apply-grid">
     <div>
       <h2>Станьте<br>поставщиком</h2>
-      <p class="sub">Расскажем об условиях сотрудничества, комиссии и возможностях размещения ваших товаров.</p>
+      <p class="sub">Расскажем об условиях сотрудничества, ценообразовании и возможностях размещения ваших товаров.</p>
       <ul>
         <li>Работа по вашей оптовой цене</li>
         <li>Без обязательного хранения товаров</li>
-        <li>Без скрытых платежей</li>
+        <li>Прозрачные условия с самого начала</li>
         <li>Поддержка на всех этапах запуска</li>
       </ul>
     </div>
