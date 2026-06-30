@@ -30,6 +30,7 @@
       font-family: 'Manrope', 'Segoe UI', Arial, sans-serif;
       color: var(--ink); background: var(--white);
       line-height: 1.5; -webkit-font-smoothing: antialiased;
+      overflow-x: clip;
     }
     a { color: inherit; text-decoration: none; }
     .wrap { width: min(var(--max), 92vw); margin: 0 auto; }
@@ -95,6 +96,12 @@
     @media (max-width: 760px) {
       .why-row { grid-template-columns: 48px 1fr; }
       .why-row p { grid-column: 2; }
+      .head { gap: 12px; }
+      .head nav { gap: 14px; }
+      .head nav a:not(.btn) { display: none; }
+      .head .btn-primary { padding: 10px 16px; font-size: 13px; }
+      .logo-img { height: 26px; }
+      .display { font-size: clamp(32px, 8.5vw, 56px); }
     }
 
     /* ---------- Steps (giant outlined numerals) ---------- */
