@@ -618,7 +618,7 @@ const DADATA_TOKEN = '4a94c1cb8c5ab162438319075f870f5d0e1e0ec4';
       .then(function (d) {
         const s = d.suggestions && d.suggestions[0];
         if (!s) return;
-        // не затираем то, что пользователь ввёл руками
+        // не затираем то, что пользователь ввел руками
         if (!companyEl.value.trim() || companyEl.value === autofilled) {
           companyEl.value = s.value;
           autofilled = s.value;

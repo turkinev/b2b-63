@@ -6,7 +6,7 @@ app = Flask(__name__)
 # TODO: ограничить origins доменом сайта вместо «*», когда он зафиксирован:
 #   CORS(app, origins=['https://63pokupki.ru'])
 CORS(app)
-# Жёсткий лимит на размер тела запроса — защита от раздувания/DoS.
+# Жесткий лимит на размер тела запроса — защита от раздувания/DoS.
 app.config['MAX_CONTENT_LENGTH'] = 64 * 1024
 
 MM_HOOK          = 'https://mm.63pokupki.ru:8443/hooks/k7xh9osx5tr1pbyr1b6y3rqcba'
@@ -21,7 +21,7 @@ def notify_mm_hook(hook, text):
         pass
 
 
-# Приём заявок поставщиков в хаб. Секретный токен — только из окружения:
+# Прием заявок поставщиков в хаб. Секретный токен — только из окружения:
 #   systemd: Environment=SUPPLIER_WEBFORM_TOKEN=...  (или EnvironmentFile)
 HUB_SUPPLIER_WEBHOOK   = 'https://hub.63pokupki.ru/api/v1/suppliers/sources/manual/candidates/webhook'
 SUPPLIER_WEBFORM_TOKEN = os.environ.get('SUPPLIER_WEBFORM_TOKEN', '')
