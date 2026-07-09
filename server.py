@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import re, ipaddress, requests as req
+import re, os, uuid, ipaddress, requests as req
 
 app = Flask(__name__)
 # TODO: ограничить origins доменом сайта вместо «*», когда он зафиксирован:
@@ -17,6 +17,22 @@ MM_HOOK_SUPPLIER = 'https://mm.63pokupki.ru:8443/hooks/sds81m1gyjnw7guk8xjy9agqc
 def notify_mm_hook(hook, text):
     try:
         req.post(hook, json={'text': text}, timeout=5)
+    except Exception:
+        pass
+
+
+# Приём заявок поставщиков в хаб. Секретный токен — только из окружения:
+#   systemd: Environment=SUPPLIER_WEBFORM_TOKEN=...  (или EnvironmentFile)
+HUB_SUPPLIER_WEBHOOK   = 'https://hub.63pokupki.ru/api/v1/suppliers/sources/manual/candidates/webhook'
+SUPPLIER_WEBFORM_TOKEN = os.environ.get('SUPPLIER_WEBFORM_TOKEN', '')
+
+
+def send_supplier_candidate(payload):
+    if not SUPPLIER_WEBFORM_TOKEN:
+        return
+    try:
+        req.post(HUB_SUPPLIER_WEBHOOK, json=payload,
+                 headers={'X-Webhook-Token': SUPPLIER_WEBFORM_TOKEN}, timeout=5)
     except Exception:
         pass
 
@@ -228,6 +244,20 @@ def submit_supplier():
     record = {'inn': inn, 'company': company, 'category': category,
               'site': site, 'contact': contact, 'comment': comment}
     persist('supplier', record)
+
+    notes_parts = [f'Категория: {category}'] if category else []
+    if comment:
+        notes_parts.append(comment)
+    send_supplier_candidate({
+        'external_id': 'web-form-' + uuid.uuid4().hex,
+        'name':    company,
+        'inn':     inn,
+        'email':   contact if valid_email(contact) else '',
+        'phone':   contact if valid_phone(contact) else '',
+        'website': site,
+        'notes':   '. '.join(notes_parts),
+    })
+
     notify_mm_hook(MM_HOOK_SUPPLIER,
         f"🚚 **Новая заявка поставщика**\n**ИНН:** {md(inn)}\n**Компания:** {md(company)}\n"
         f"**Категория:** {md(category)}\n**Сайт:** {md(site)}\n"
