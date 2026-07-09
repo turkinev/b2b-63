@@ -592,10 +592,9 @@ async function submitForm(e) {
   btn.textContent = 'Отправить заявку';
 }
 
-// Автозаполнение названия компании по ИНН через DaData (suggest/party)
-// TODO: заменить на СВОЙ токен DaData (с ограничением по referrer в кабинете) —
-// сейчас стоит демо-ключ из документации, он общий и лимитированный.
-const DADATA_TOKEN = '4a94c1cb8c5ab162438319075f870f5d0e1e0ec4';
+// Автозаполнение названия компании по ИНН.
+// Запрос идет на наш backend /suggest-party, а тот ходит в DaData с токеном
+// из окружения — ключ DaData в браузер не попадает.
 (function () {
   const innEl = document.getElementById('inn');
   const companyEl = document.getElementById('company');
@@ -605,14 +604,10 @@ const DADATA_TOKEN = '4a94c1cb8c5ab162438319075f870f5d0e1e0ec4';
     const inn = innEl.value.trim();
     if (!/^(\d{10}|\d{12})$/.test(inn) || inn === lastQuery) return;
     lastQuery = inn;
-    fetch('https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/party', {
+    fetch('/suggest-party', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Token ' + DADATA_TOKEN
-      },
-      body: JSON.stringify({ query: inn, count: 1 })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: inn })
     })
       .then(function (r) { return r.json(); })
       .then(function (d) {

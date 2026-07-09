@@ -26,6 +26,11 @@ def notify_mm_hook(hook, text):
 HUB_SUPPLIER_WEBHOOK   = 'https://hub.63pokupki.ru/api/v1/suppliers/sources/manual/candidates/webhook'
 SUPPLIER_WEBFORM_TOKEN = os.environ.get('SUPPLIER_WEBFORM_TOKEN', '')
 
+# DaData Suggestions (подсказка компании по ИНН). Токен только из окружения,
+# на фронт не отдается — запрос проксируется через /suggest-party.
+DADATA_TOKEN         = os.environ.get('DADATA_TOKEN', '')
+DADATA_SUGGEST_PARTY = 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/party'
+
 
 def send_supplier_candidate(payload):
     if not SUPPLIER_WEBFORM_TOKEN:
@@ -271,6 +276,29 @@ def submit_supplier():
         f"**Категория:** {md(category)}\n**Сайт:** {md(site)}\n"
         f"**Телефон:** {md(phone)}\n**E-mail:** {md(email)}\n**Комментарий:** {md(comment)}")
     return jsonify({'ok': True})
+
+
+@app.route('/suggest-party', methods=['POST'])
+def suggest_party():
+    """Прокси к DaData: подсказка компании по ИНН. Токен DaData на фронт не уходит.
+    Принимаем только ИНН (10/12 цифр) — чтобы это не был открытый прокси-поиск."""
+    if not DADATA_TOKEN:
+        return jsonify({'suggestions': []})
+    d = request.get_json(silent=True) or {}
+    query = clean(d.get('query'), 20)
+    if not re.fullmatch(r'\d{10}|\d{12}', query):
+        return jsonify({'suggestions': []})
+    try:
+        r = req.post(DADATA_SUGGEST_PARTY,
+                     json={'query': query, 'count': 1},
+                     headers={'Content-Type': 'application/json',
+                              'Accept': 'application/json',
+                              'Authorization': 'Token ' + DADATA_TOKEN},
+                     timeout=5)
+        items = r.json().get('suggestions') or []
+    except Exception:
+        return jsonify({'suggestions': []})
+    return jsonify({'suggestions': [{'value': s.get('value', '')} for s in items[:1]]})
 
 
 @app.route('/track', methods=['POST'])
