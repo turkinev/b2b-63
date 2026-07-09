@@ -29,12 +29,17 @@ SUPPLIER_WEBFORM_TOKEN = os.environ.get('SUPPLIER_WEBFORM_TOKEN', '')
 
 def send_supplier_candidate(payload):
     if not SUPPLIER_WEBFORM_TOKEN:
+        print('[supplier-webhook] SKIP: SUPPLIER_WEBFORM_TOKEN не задан', flush=True)
         return
     try:
-        req.post(HUB_SUPPLIER_WEBHOOK, json=payload,
-                 headers={'X-Webhook-Token': SUPPLIER_WEBFORM_TOKEN}, timeout=5)
-    except Exception:
-        pass
+        r = req.post(HUB_SUPPLIER_WEBHOOK, json=payload,
+                     headers={'X-Webhook-Token': SUPPLIER_WEBFORM_TOKEN}, timeout=5)
+        if r.status_code >= 300:
+            print(f'[supplier-webhook] HTTP {r.status_code}: {r.text[:500]}', flush=True)
+        else:
+            print(f'[supplier-webhook] OK {r.status_code}', flush=True)
+    except Exception as e:
+        print(f'[supplier-webhook] ERROR: {e!r}', flush=True)
 
 
 def persist(kind, record):
