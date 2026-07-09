@@ -233,21 +233,24 @@ def submit_supplier():
         inn      = require(clean(d.get('inn'), 12), 'ИНН')
         company  = require(clean(d.get('company'), 200), 'Компания')
         category = require(clean(d.get('category'), 100), 'Категория')
-        site     = clean(d.get('site'), 200)
-        contact  = require(clean(d.get('contact'), 100), 'Контакт')
+        site     = require(clean(d.get('site'), 200), 'Сайт')
+        phone    = clean(d.get('phone'), 32)
+        email    = require(clean(d.get('email'), 254), 'E-mail')
         comment  = clean(d.get('comment'), 2000, multiline=True)
 
         if not valid_inn(inn):
             raise Invalid('Некорректный ИНН')
-        if site and not valid_site(site):
+        if not valid_site(site):
             raise Invalid('Некорректный сайт')
-        if not valid_contact(contact):
-            raise Invalid('Контакт: укажите телефон или e-mail')
+        if not valid_email(email):
+            raise Invalid('Некорректный e-mail')
+        if phone and not valid_phone(phone):
+            raise Invalid('Некорректный телефон')
     except Invalid as e:
         return jsonify({'error': str(e)}), 400
 
     record = {'inn': inn, 'company': company, 'category': category,
-              'site': site, 'contact': contact, 'comment': comment}
+              'site': site, 'phone': phone, 'email': email, 'comment': comment}
     persist('supplier', record)
 
     notes_parts = [f'Категория: {category}'] if category else []
@@ -257,8 +260,8 @@ def submit_supplier():
         'external_id': 'web-form-' + uuid.uuid4().hex,
         'name':    company,
         'inn':     inn,
-        'email':   contact if valid_email(contact) else '',
-        'phone':   contact if valid_phone(contact) else '',
+        'email':   email,
+        'phone':   phone,
         'website': site,
         'notes':   '. '.join(notes_parts),
     })
@@ -266,7 +269,7 @@ def submit_supplier():
     notify_mm_hook(MM_HOOK_SUPPLIER,
         f"🚚 **Новая заявка поставщика**\n**ИНН:** {md(inn)}\n**Компания:** {md(company)}\n"
         f"**Категория:** {md(category)}\n**Сайт:** {md(site)}\n"
-        f"**Контакт:** {md(contact)}\n**Комментарий:** {md(comment)}")
+        f"**Телефон:** {md(phone)}\n**E-mail:** {md(email)}\n**Комментарий:** {md(comment)}")
     return jsonify({'ok': True})
 
 
