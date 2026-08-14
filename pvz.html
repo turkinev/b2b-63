@@ -164,8 +164,12 @@
       <button type="button" class="btn-add-addr" onclick="addAddress()">+ Добавить адрес</button>
     </div>
     <div class="form-group">
-      <label for="contact">Контакт</label>
-      <input type="text" id="contact" name="contact" maxlength="100" placeholder="Телефон или e-mail" required />
+      <label for="phone">Телефон</label>
+      <input type="tel" id="phone" name="phone" maxlength="32" placeholder="+7 (999) 000-00-00" required />
+    </div>
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" maxlength="254" placeholder="info@company.ru" required />
     </div>
     <div class="form-group">
       <label for="comment">Комментарий <span class="opt">(необязательно)</span></label>
@@ -201,7 +205,8 @@ async function submitForm(e) {
     company: document.getElementById('company').value.trim(),
     address: Array.from(document.querySelectorAll('#addressList [name="address[]"]')).map(i => i.value.trim()).filter(Boolean).join('\n'),
     count:   document.getElementById('count').value.trim(),
-    contact: document.getElementById('contact').value.trim(),
+    phone:   document.getElementById('phone').value.trim(),
+    email:   document.getElementById('email').value.trim(),
     comment: document.getElementById('comment').value.trim(),
     website: document.getElementById('website').value
   };

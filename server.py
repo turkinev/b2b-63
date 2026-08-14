@@ -56,10 +56,11 @@ def persist(kind, record):
     SQL-инъекция):
 
         cur.execute(
-            "INSERT INTO leads (kind, inn, company, contact, payload, created) "
-            "VALUES (%s, %s, %s, %s, %s, now())",
+            "INSERT INTO leads (kind, inn, company, phone, email, payload, created) "
+            "VALUES (%s, %s, %s, %s, %s, %s, now())",
             (kind, record.get('inn'), record.get('company'),
-             record.get('contact'), json.dumps(record, ensure_ascii=False)),
+             record.get('phone'), record.get('email'),
+             json.dumps(record, ensure_ascii=False)),
         )
 
     В админке значения выводить ЭКРАНИРОВАННО (html.escape / автоэкранирование
@@ -137,10 +138,6 @@ def valid_email(e):
     return len(e) <= 254 and bool(_EMAIL_RE.match(e))
 
 
-def valid_contact(c):
-    return valid_phone(c) or valid_email(c)
-
-
 def valid_site(s):
     return len(s) <= 200 and bool(_SITE_RE.match(s))
 
@@ -207,25 +204,28 @@ def submit_pvz():
         company = require(clean(d.get('company'), 200), 'Компания')
         address = require(clean(d.get('address'), 2000, multiline=True), 'Адреса')
         count   = require(clean(d.get('count'), 10), 'Количество ПВЗ')
-        contact = require(clean(d.get('contact'), 100), 'Контакт')
+        phone   = require(clean(d.get('phone'), 32), 'Телефон')
+        email   = require(clean(d.get('email'), 254), 'E-mail')
         comment = clean(d.get('comment'), 2000, multiline=True)
 
         if not valid_inn(inn):
             raise Invalid('Некорректный ИНН')
         if not valid_count(count):
             raise Invalid('Некорректное количество ПВЗ')
-        if not valid_contact(contact):
-            raise Invalid('Контакт: укажите телефон или e-mail')
+        if not valid_phone(phone):
+            raise Invalid('Некорректный телефон')
+        if not valid_email(email):
+            raise Invalid('Некорректный e-mail')
     except Invalid as e:
         return jsonify({'error': str(e)}), 400
 
     record = {'inn': inn, 'company': company, 'address': address,
-              'count': count, 'contact': contact, 'comment': comment}
+              'count': count, 'phone': phone, 'email': email, 'comment': comment}
     persist('pvz', record)
     notify_mm_hook(MM_HOOK_PVZ,
         f"🏪 **Новая заявка ПВЗ**\n**ИНН:** {md(inn)}\n**Компания:** {md(company)}\n"
         f"**Адреса:** {md(address)}\n**Кол-во ПВЗ:** {md(count)}\n"
-        f"**Контакт:** {md(contact)}\n**Комментарий:** {md(comment)}")
+        f"**Телефон:** {md(phone)}\n**E-mail:** {md(email)}\n**Комментарий:** {md(comment)}")
     return jsonify({'ok': True})
 
 
